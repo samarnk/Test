@@ -1,0 +1,11 @@
+เมื่อวานมีการประชุมกับ vender เรื่อง Configuration and Deplyment หลังจากในที่ประชุมยังไม่ได้ข้อสรุปว่าในระยะยาวทาง vendor จะมี solution  ในการแก้ไขปัญหานี้ยังไง โดยเราได้แจ้งถึงความกังวลว่าถึงเรื่องวิธีการจัดการ system configuration  ของทาง  Vender อาจจะทำให้เกิดปัญหาขึ้นอีกในอนาคต เนื่องจาก
+	1. เมื่อมีการ  upgrade framework ใน environment ใดๆ จะทำการ replace configuration  จาก CFG ไปโดยอัตโนมัติ ซึ่งอาจจะทำโดยที่ยังไม่ได้รับการ confirm จาก PLT เช่นเมื่อมีการ upgrade framework  ที่ production  จะทำให้ configuration ที่อยู่ใน CFG ถูกนำขึ้น production ไปด้วย
+	2. Configuration Management ไม่ได้มีการจัดการในเรื่องของ  version  control กรณีที่มีอาจจะมีหลาย Change Requests เช่น อาจจะมี 3 change requests  อยู่บน UAT ที่ต้องแก้ไข  configuration และทาง PLT signoff UAT เพื่อที่จะ depoy production แค่ 1 CR ทาง ZA จะมีวิธีการจัดการอย่างไรในเรื่องนี้
+	3. Configuration บางอย่างในระบบ อาจจะแตกต่างกันตามแต่ล่ะ environment อย่างเช่น SSO configuration ถ้ามี CFG repository เดียว จะจัดการในเรื่องของความแต่ต่างนี้ได้อย่างไร
+
+
+อย่างไรก็ตามเราจะทำการ communicate ไปยังทีม PLT ไม่ให้ทำการแก้ไข configuration ในระบบด้วยตนเอง
+ต้องส่ง request ขอให้ทาง ZA  ทำให้เท่านั้น
+เนื่องจากใน CFG  ไม่ได้มีแค่ Product Configuration เพียงอย่างเดียว สิ่งที่เราอยากทราบเพิ่มเติมมีดังนี้
+	1.  configuration  อันไหนที่จัดการอยู่ใน CFG และ configuration ตัวไหนบ้างไม่ได้อยู่ใน CFG
+	2.Configuration ไหนบ้างที่ทาง PLT แก้ไขได้ด้วยตัวเอง Configuration ไหนที่ PLT ไม่ควรแก้ไขด้วยตัวเอง
