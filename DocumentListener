@@ -1,0 +1,77 @@
+
+receivedFileMetadata is List of key and value of file metadata that triggered by FileNet Listener
+
+
+=========================================================================================================
+Event == 'CheckinEvent' //This event occurred when created new file in FileNet
+=========================================================================================================
+IF receivedFileMetadata.event == "CheckinEvent" THEN
+	//Same as current implementation logic
+	existingClaimCase = Find claim case by partnerRef(PltTransactionNo) 
+	IF existingClaimCase == Null THEN
+		Create new claim case and attach the file matadata
+	IF existingClaimCase.status == Pending THEN
+			existingPendingCase = Find pending case by partnerRef(PltTransactionNo)
+			Attached the file metadata in claim case level
+		ELSE
+			existingPendingCase = Find pending case by partnerRef(PltTransactionNo)
+			Attached the file metadata in pending case level
+		ENDIF
+	ENDIF
+ELSEIF 
+
+=========================================================================================================
+Event == 'UpdateEvent'  //This event occurred when someone changed metadata on existing file on FileNet and marked wfStatus=3
+=========================================================================================================
+attachedFileClaimCase = Find attached file in claim case level by receivedFileMetadata.uid
+attachedFilePendingCases = Find attached file in pending case level by receivedFileMetadata.uid
+
+IF oldClaimCase == null and oldPendingCases  == null THEN
+	**Continue process same as received new document 
+ELSE 
+	
+	IF fileNetMetaData.partnerRef !=  attachedFileClaimCase.ClaimCase.PltTransactionNo    THEN  //Changed data on partnerRef field
+		
+		//Deleted document from existing claim case
+		IF attachedFileClaimCase!= null  AND attachedFileClaimCase.claimCase.status = Not Completed THEN
+			Remove the attached file from claim case level
+		ENDIF
+		IF attachedFilePendingCases  != null  AND attachedFilePendingCases.pendingCase.status = Not Completed   THEN
+			Remove the attached file from pending case level
+		ENDIF
+		
+		//Add document In New Case
+		existingClaimCase = Find claim case by receivedFileMetadata.partnerRef(PltTransactionNo) 
+		IF claimCase != null THEN
+		    IF claimCase.status == Not Complete THEN 
+				Attached the file metadata in claim case level
+			ELSEIF claimCase.status == Pending THEN
+			    Attached the file metadata in pending case level
+			ENDIF    
+		ELSE
+		    Create new claim case and attached receivedFileMetadata 
+		ENDIF
+		
+	ELSE //Changed on other metedata fields
+		IF attachedFileClaimCase != Null THEN
+		    Update all metadata in attachedFileClaimCase with new value from receivedFileMetadata
+		ENDIF
+		
+		IF attachedFilePendingCases != Null THEN
+		    Update all metadata in attachedFilePendingCases with new value from receivedFileMetadata
+		ENDIF
+	ENDIF
+	
+ENDIF
+
+=========================================================================================================
+Logic for Event == 'DeletionEvent' //This event occurred when the document has been deleted in FileNet
+=========================================================================================================
+attachedFileClaimCase = Find attached file in claim case level by receivedFileMetadata.uid
+attachedFilePendingCases = Find attached file in pending case level by receivedFileMetadata.uid
+IF attachedFileClaimCase!= null  AND attachedFileClaimCase.claimCase.status = Not Completed THEN
+	Remove the attached file from claim case level
+ENDIF
+IF attachedFilePendingCases  != null  AND attachedFileClaimCase.pendingCase.status = Not Completed   THEN
+	Remove the attached file from pending case level
+ENDIF
