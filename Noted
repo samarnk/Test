@@ -1,0 +1,3 @@
+Previously, the FileNet Listener would only invoke the "send_file_metadata" API when new documents were uploaded to FileNet. 
+This was done to facilitate metadata corrections in cases of incorrect indexing and document deletions from FileNet. 
+Consequently, we have introduced an "event" field to identify the specific event that triggers the invocation of the "send_file_metadata" API.
