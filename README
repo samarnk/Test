@@ -1,1 +1,26 @@
-Once you got the solution, please provide timeline and let discuss how your solution to resolve this problem.
+Certainly! Here's a non-functional requirement for retrying API calls in case of errors:
+
+Retry Mechanism:
+The system should incorporate a robust retry mechanism for API calls in the event of errors. The retry mechanism should possess the following characteristics:
+
+1. Retry Attempts: The system should specify the maximum number of retry attempts for each failed API call. This allows for a configurable and controlled retry process.
+
+2. Retry Interval: The system should define a configurable interval between retry attempts. The interval allows for an appropriate amount of time between retries to avoid overloading the API or causing performance issues.
+
+3. Backoff Strategy: The retry mechanism should employ a backoff strategy, where the time between each subsequent retry attempt increases gradually. This strategy prevents overwhelming the API with a rapid succession of retry requests.
+
+4. Exponential Backoff: The backoff strategy should follow an exponential pattern, meaning that the waiting time between retries progressively increases with each attempt. This approach helps to avoid continuous retries without unnecessarily prolonging the overall process.
+
+5. Error Criteria: The retry mechanism should consider specific error criteria that trigger the retry process. It should be capable of detecting different types of errors, such as connection timeouts, server errors, or specific error codes, to determine when a retry attempt is warranted.
+
+6. Failure Handling: If all retry attempts fail, the system should have a predefined approach to handle the failure gracefully. This could involve logging the error, alerting relevant parties, and triggering appropriate error handling or fallback mechanisms.
+
+7. Retry Limit: The system should define a maximum limit for the number of retry attempts. Once the limit is reached, the system should halt the retry process and proceed with alternative error handling or escalation procedures.
+
+8. Monitoring and Logging: The retry mechanism should provide monitoring and logging capabilities to track the number of retry attempts, the intervals between attempts, and the ultimate outcome (success or failure) of each retry. This information aids in troubleshooting, analysis, and process improvement.
+
+9. Configurability: The retry mechanism should be configurable, allowing system administrators or developers to adjust the retry parameters, such as maximum attempts, interval duration, or error criteria, based on the specific needs and characteristics of the API calls.
+
+10. Scalability: The retry mechanism should be scalable and capable of handling a high volume of API calls without compromising system performance or introducing excessive delays in the overall process flow.
+
+By incorporating these non-functional requirements, the system can effectively handle errors during API calls by implementing a reliable and intelligent retry mechanism.
