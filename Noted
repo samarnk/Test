@@ -1,28 +1,4 @@
-Previously, the FileNet Listener would only call the "send_file_metadata" API when new documents were uploaded to FileNet. 
-However, there are scenarios where attributes need to be changed to correct metadata due to indexing errors or document deletions from FileNet. Therefore, we have added an "event" field to identify the event that triggers the "send_file_metadata" API call.
+After discussed with Krittaya, we are fine for the scope on this only for duplicate transaction prevention.
 
-
-The code provided describes a set of events and the corresponding actions to be taken based on the event type. Here is a summary of the events and their associated actions:
-
-CheckinEvent: This event occurs when a new file is created in FileNet.
-
-The code checks if an existing claim case exists based on the partner reference (PltTransactionNo).
-If no existing claim case is found, a new claim case is created and the file metadata is attached.
-If the existing claim case has a status of "Pending," the code finds the pending case based on the partner reference and attaches the file metadata at the claim case level. Otherwise, it attaches the file metadata at the pending case level.
-UpdateEvent: This event occurs when someone changes the metadata on an existing file in FileNet and marks wfStatus=3.
-
-The code finds the attached file in the claim case level and pending case level based on the received file metadata's unique identifier (uid).
-If no previous claim case or pending cases are found, the process continues as if a new document was received.
-If the partner reference (PltTransactionNo) in the fileNetMetaData is different from the one in the attached claim case, the code performs the following steps:
-If the attached file exists in the claim case and the claim case status is "Not Completed," the attached file is removed from the claim case level.
-If the attached file exists in the pending cases and the pending case status is "Not Completed," the attached file is removed from the pending case level.
-The code then checks if an existing claim case exists based on the received file metadata's partner reference.
-If the claim case exists, it checks the status and attaches the file metadata at the appropriate level (claim case level if status is "Not Complete," or pending case level if status is "Pending").
-If the claim case doesn't exist, a new claim case is created and the received file metadata is attached.
-If the partner reference is the same or not modified, the code updates all metadata in the attached claim case and pending cases with the new values from the received file metadata.
-DeletionEvent: This event occurs when a document is deleted in FileNet.
-
-The code finds the attached file in the claim case level and pending case level based on the received file metadata's unique identifier (uid).
-If the attached file exists in the claim case and the claim case status is "Not Completed," the attached file is removed from the claim case level.
-If the attached file exists in the pending cases and the pending case status is "Not Completed," the attached file is removed from the pending case level.
-Note: The code provided is an outline and does not include the complete implementation details for each event
+In the scenario, if there are any changes on claim transaction data in AS400 e.g. change approve claim amount, change claim status.
+We need to further discuss how manage this scenario.
