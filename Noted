@@ -1,5 +1,16 @@
-After discussed with Krittaya, we are fine for the scope on this only for duplicate transaction prevention.
+As we discussed, The API is require you send a claim transaction follow the spec.
 
-In the scenario, if there are any changes on claim transaction data in AS400 e.g. change approve claim amount, change claim status.
-We need to further discuss how manage this scenario.
-mcwh6p9f9n5ll70rsyzjgxrf4594.ftp.marketingcloudops.com
+Please send claim transaction follow our API spec as we expect value in column I(Require) and column P (Remark) 
+
+Require = Y, Remark = Not Blank
+
+"firstName": "May"    -> Correct
+"firstName": "" 	          -> Incorrect 	
+"firstName": null        -> Incorrect
+
+ 
+Require = N, Remark = Not Null
+
+"titleName": "Mr."      -> Correct
+"titleName": ""            -> Correct
+"titleName": null         -> Incorrect
