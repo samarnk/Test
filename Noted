@@ -1,21 +1,3 @@
-// pages/_app.tsx
-import '../styles/globals.css';
-import { AppProps } from 'next/app';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
-  return (
-    <div className="app">
-      <Sidebar />
-      <div className="main-content">
-        <Header />
-        <Component {...pageProps} />
-      </div>
-      <Footer />
-    </div>
-  );
-};
-
-export default MyApp;
+If you not provide an editable SSO Account in the employee information section, how do we check the SSO Account whether correct or not because in the employee information section does not show SSO Account.
+At lease you should add a new read-only field “SSO Account” in the employee information section as below.
+If you have a filed “SSO Account” in there , you just a little bit effort to make it editable. 
